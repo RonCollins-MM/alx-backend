@@ -11,8 +11,8 @@ class BasicCache(BaseCaching):
 
     def put(self, key, item):
         """
-        Adds the key and item(value) passed to a dictionary that acts as a local
-        cache.
+        Adds the key and item(value) passed to a dictionary that acts as a
+        local cache.
         """
         if key is None or item is None:
             return
