@@ -28,28 +28,56 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """
-        Use assert to verify that both arguments are integers greater than 0
-        Use index_range to find the correct indexes
-        to paginate the dataset correctly
-        and return the appropriate page of the dataset
-        (i.e. the correct list of rows)
+        Returns a subset of data from a dataset representing a page.
+
+        parameters:
+        ----------
+        page : int
+            The number of pages to be returned
+        page_size : int
+            The size of each page
+
+        Returns
+        -------
+        List : List
+            A list (page) containing lists (page contents)
         """
-        assert (isinstance(page, int) and isinstance(page_size, int)
-                and page > 0 and page_size > 0)
-        range = index_range(page, page_size)
-        self.dataset()
-        return self.__dataset[range[0]:range[1]]
+        assert type(page) == int
+        assert type(page_size) == int
+        assert (page > 0 and page_size > 0)
+
+        new_page = []
+        page_indexes = index_range(page, page_size)
+        data = self.dataset()
+        if page_indexes[0] > len(data):
+            return []
+        start = page_indexes[0]
+        end = page_indexes[1]
+        while start < end:
+            new_page.append(data[start])
+            start += 1
+
+        return new_page
 
 
 def index_range(page, page_size):
+    """Method that implements a simple pagination algorithm.
+
+    Parameters
+    ----------
+    page : int
+        The logical 'page' of data that is requested
+
+    page_size : int
+        The size of each virtual page
+
+    Returns
+    -------
+    tuple
+        A tuple of size 2 containing the start index and end index to be used
+        for pagination
     """
-    function named index_range that takes two integer arguments:
-    page and page_size.
-    The function should return a tuple of size two containing:
-    a start index and an end index corresponding to
-    the range of indexes to return in a list
-    for those particular pagination parameters.
-    Page numbers are 1-indexed, i.e. the first page is page 1.
-    """
-    previous = (page - 1) * page_size
-    return (previous, previous + page_size)
+
+    end_index = page_size * page
+    start_index = end_index - page_size
+    return (start_index, end_index)
