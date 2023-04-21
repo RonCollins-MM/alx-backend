@@ -40,23 +40,52 @@ class Server:
         self.dataset()
         return self.__dataset[range[0]:range[1]]
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> List[List]:
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
         """
-        A method that takes the same arguments (and defaults) as get_page
-        and returns a dictionary containing the following key-value pairs:
-        page_size: the length of the returned dataset page
-        page: the current page number
-        data: the dataset page (equivalent to return from previous task)
-        next_page: number of the next page, None if no next page
-        prev_page: number of the previous page, None if no previous page
-        total_pages: the total number of pages in the dataset as an integer
+        Method that returns a hyperpage - pages containing data as well as
+        metadata on the data.
+
+        Parameters
+        ----------
+        page : int
+            Current page number requested
+        page_size : int
+            Size of current page
+
+        Returns
+        -------
+        dict
+            The dictionary returned contains the following keys:
+                * page_size: the length of the returned dataset page
+                * page: the current page number
+                * data: the dataset page (equivalent to return from previous
+                task)
+                * next_page: number of the next page, None if no next page
+                * prev_page: number of the previous page, None if no previous
+                page
+                * total_pages: the total number of pages in the dataset as an
+                integer
+
         """
-        data = self.get_page(page, page_size)
-        total = math.ceil(len(self.__dataset) / page_size)
-        next = page + 1 if page < total else None
-        prev = page - 1 if page > 1 else None
-        return {'page_size': len(data), 'page': page, 'data': data,
-                'next_page': next, 'prev_page': prev, 'total_pages': total}
+        hyperm_page = {}
+        total_pages = 0
+        hyperm_page.update({'page': page})
+        hyperm_page.update({'data': self.get_page(page, page_size)})
+        hyperm_page.update({'page_size': len(hyperm_page['data'])})
+        start_index = index_range(page, page_size)[0]
+        if start_index <= 0:
+            hyperm_page.update({'prev_page': None})
+        else:
+            hyperm_page.update({'prev_page': page - 1})
+        end_index = index_range(page, page_size)[1]
+        if end_index >= len(self.__dataset):
+            hyperm_page.update({'next_page': None})
+        else:
+            hyperm_page.update({'next_page': page + 1})
+        total_pages = math.ceil(len(self.__dataset) / page_size)
+        hyperm_page.update({'total_pages': total_pages})
+
+        return hyperm_page
 
 
 def index_range(page, page_size):
