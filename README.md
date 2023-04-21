@@ -1,2 +1,2 @@
-# alx-backend
-Repo for learning advanced concepts of backend throu ALX
+# Backend concepts
+- Pagination is an example
