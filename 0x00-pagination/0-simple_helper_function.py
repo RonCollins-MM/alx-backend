@@ -23,4 +23,4 @@ def index_range(page, page_size):
 
     end_index = page_size * page
     start_index = end_index - page_size
-    return (start_index,  + end_index)
+    return (start_index, end_index)
