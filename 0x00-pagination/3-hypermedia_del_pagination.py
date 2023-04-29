@@ -53,21 +53,21 @@ class Server:
         page_size: the current page size
         data: the actual page of the dataset
         """
-        assert (isinstance(index, int)
-                and index in range(len(self.__indexed_dataset)))
+        res_page = {}
+
+        dataset = self.dataset()
+        assert index < len(dataset) and index >= 0
+        next_index = index + page_size
+        res_page.update({'index': index, 'next_index': next_index,
+                         'page_size': page_size})
         data = []
-        diff = 0
-        row = index
-        while diff < page_size and row < len(self.__indexed_dataset):
-            if row in self.__indexed_dataset:
-                data.append(self.__indexed_dataset[row])
-                row += 1
-                diff += 1
-            else:
-                row += 1
-        if row < len(self.__indexed_dataset):
-            next = row
-        else:
-            next = None
-        return {'index': index, 'next_index': next,
-                'page_size': len(data), 'data': data}
+        indexed_dataset = self.indexed_dataset()
+        while index < next_index:
+            if index not in indexed_dataset.keys():
+                index += 1
+                next_index += 1
+            data.append(indexed_dataset[index])
+            index += 1
+        res_page.update({'data': data})
+
+        return res_page
