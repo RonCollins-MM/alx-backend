@@ -15,12 +15,29 @@ from base_cahing import BaseCaching
 
 class FIFOCache(BaseCaching):
     """
+    Simple `FIFO` caching algorithm implementation.
 
+    Inherits from `BaseCaching`.\n
+    Defines two methods:
+        * `put` - For adding items to the cache using `FIFO` algorithm
+        * `get` - For retrieving items from the cache
     """
 
     def put(self, key, item):
         """
+        Method for adding items to cache following `FIFO` algorithm.
 
+        First, validate that `key` and `item` passed are not Null. Check if
+        key exists in cache - if yes, replace its value with `item`. If not,
+        and max number of items in cache is reached, remove the oldest item
+        in cache then add the new item.
+
+        Parameters
+        ----------
+        key : Any
+            Identifies cache items
+        item : Any
+            The cache item
         """
 
         if key is None or item is None:
@@ -36,7 +53,20 @@ class FIFOCache(BaseCaching):
 
     def get(self, key):
         """
+        Retrieves items from cache.
 
+        First, ensure `key` is not null and it exists in the cache keys.
+        Then, get the item associated with the key in cache.
+
+        Parameters
+        ----------
+        key : Any
+            Identifies items in cache
+
+        Returns
+        -------
+        item : Any
+            Item in cache associated with key
         """
 
         if key is None:
