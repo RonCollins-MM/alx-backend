@@ -13,6 +13,7 @@ Classes defined:
 
 from base_cahing import BaseCaching
 
+
 class FIFOCache(BaseCaching):
     """
     Simple `FIFO` caching algorithm implementation.
