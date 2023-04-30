@@ -42,15 +42,14 @@ class LIFOCache(BaseCaching):
             The cache item
         """
 
-
         if key is None or item is None:
             return
         if key in self.cache_data.keys():
             self.cache_data[key] = item
-            self.cache_data[key] = self.cache_data.pop(key) # Move to the end
+            self.cache_data[key] = self.cache_data.pop(key)  # Move to the end
             return
         if len(self.cache_data) >= self.MAX_ITEMS:
-            latest_item = self.cache_data.popitem() # Will remove end item
+            latest_item = self.cache_data.popitem()  # Will remove end item
             print(f'DISCARD: {latest_item[0]}')
         self.cache_data.update({key: item})
 
