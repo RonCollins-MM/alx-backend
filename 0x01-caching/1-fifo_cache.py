@@ -11,7 +11,7 @@ Classes defined:
     - Defines two methods: `put` and `get`
 """
 
-from base_cahing import BaseCaching
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class FIFOCache(BaseCaching):
